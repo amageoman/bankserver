@@ -1,3 +1,7 @@
+// import cors
+
+const cors=require('cors')
+
 // immport datasservice from service folder
 
 const dataservice =require('./service/dataservice')
@@ -14,6 +18,10 @@ const { json } = require('express')
 // create app
 const app=express()
 
+
+// connect frontend after creating app
+
+app.use(cors({origin:'http://localhost:4200/'}))
 
 // to convert json data 
 
@@ -71,8 +79,10 @@ const jwtmiddleware=(req,res,next)=>{
 
 app.post('/register',(req,res)=>{
 
-   const result= dataservice.register(req.body.acno,req.body.uname,req.body.psw)
-   res.status(result.statusCode).json(result)
+    dataservice.register(req.body.acno,req.body.uname,req.body.psw).then(result=>{
+        res.status(result.statusCode).json(result)
+    })
+   
 
 
 })
@@ -81,8 +91,10 @@ app.post('/register',(req,res)=>{
 
 app.post('/login',(req,res)=>{
 
-    const result= dataservice.login(req.body.acno,req.body.psw)
-    res.status(result.statusCode).json(result)
+    dataservice.login(req.body.acno,req.body.psw).then(result=>{
+        res.status(result.statusCode).json(result)
+    })
+    
  
  
  })
@@ -91,8 +103,10 @@ app.post('/login',(req,res)=>{
 
 app.post('/deposit',jwtmiddleware,(req,res)=>{
 
-    const result= dataservice.deposit(req.body.acno,req.body.psw,req.body.amount)
-    res.status(result.statusCode).json(result)
+    dataservice.deposit(req.body.acno,req.body.psw,req.body.amount).then(result=>{
+        res.status(result.statusCode).json(result)
+
+    })
  
  
  })
@@ -101,8 +115,10 @@ app.post('/deposit',jwtmiddleware,(req,res)=>{
 
 app.post('/withdraw',jwtmiddleware,(req,res)=>{
 
-    const result= dataservice.withdraw(req.body.acno,req.body.psw,req.body.amount)
-    res.status(result.statusCode).json(result)
+     dataservice.withdraw(req.body.acno,req.body.psw,req.body.amount).then(result=>{
+        res.status(result.statusCode).json(result)
+
+     })
  
  
  })
@@ -113,8 +129,10 @@ app.post('/withdraw',jwtmiddleware,(req,res)=>{
 
 app.post('/gettransaction',jwtmiddleware,(req,res)=>{
 
-    const result= dataservice.gettransaction(req.body.acno)
-    res.status(result.statusCode).json(result)
+    dataservice.gettransaction(req.body.acno).then(result=>{
+        res.status(result.statusCode).json(result)
+
+    })
  
  
  })
